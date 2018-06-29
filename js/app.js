@@ -39,10 +39,20 @@ function shuffle(array) {
  
 	//Added function to open cards upon click
     const deckElement = document.querySelector('.deck');
+    let counter =0;
+    let openCards = [];
     deckElement.addEventListener('click', function (event) {
     const targetCard = event.target;
-    if (targetCard.classList.contains('card')) {
+    counter++;
+    console.log(counter);
+        if (targetCard.classList.contains('card')&& counter<3){
+            openCards.push(targetCard);
             targetCard.classList.toggle('open');
             targetCard.classList.toggle('show');
+        } else if (targetCard.classList.contains('card') && counter > 2){
+            for(let card of openCards){
+                card.classList.toggle('open');
+                card.classList.toggle('show');
+            }
         }
     });
