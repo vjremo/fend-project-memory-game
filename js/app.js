@@ -36,14 +36,51 @@ function shuffle(array) {
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
- 
+
+    //Added function to set timer
+    let hour = 0, minutes =0 , seconds = 0;
+    let timer;
+    let firstClick = false;
+
+    function startTimer() {
+        timer = setInterval(function () {
+            seconds++;
+            if (seconds === 60) {
+                minutes++;
+                seconds = 0;
+            }
+            if (minutes === 60) {
+                hour++;
+                minutes = 0;
+            }
+            console.log(formatTimer());
+        }, 1000);
+        
+    }
+
+    function stopTimer() {
+        clearInterval(timer);
+    }
+
+    function formatTimer() {
+        let sec = seconds > 9 ? String(seconds) : '0' + String(seconds);
+        let min = minutes > 9 ? String(minutes) : '0' + String(minutes);
+        return min  + ':' + sec;
+    }
 	//Added function to open cards upon click
     const deckElement = document.querySelector('.deck');
     let counter =0;
     let openCards = [];
+    let moves;
     deckElement.addEventListener('click', function (event) {
     const targetCard = event.target;
     counter++;
+    if(firstClick===false){
+        firstClick = true; 
+        //startTimer();
+    }
+    moves = document.querySelector('.moves');
+    moves.innerHTML = counter;
     console.log(counter);
         if (targetCard.classList.contains('card')&& counter<3){
             openCards.push(targetCard);
@@ -56,3 +93,10 @@ function shuffle(array) {
             }
         }
     });
+
+    const resetGame = document.querySelector('.restart');
+    resetGame.addEventListener('click', function () {
+        moves.innerHTML=0;
+        
+    })
+
