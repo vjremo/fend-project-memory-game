@@ -37,10 +37,18 @@ function shuffle(array) {
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  */
 
-    //Added function to set timer
+    //Function to set timer
     let hour = 0, minutes =0 , seconds = 0;
     let timer;
     let firstClick = false;
+    let matches =0;
+
+    
+    const deckElement = document.querySelector('.deck');
+    let counter = 0;
+    let openCards = [];
+    let moves;
+    deckElement.addEventListener('click', gameLogic);
 
     function startTimer() {
         timer = setInterval(function () {
@@ -53,50 +61,71 @@ function shuffle(array) {
                 hour++;
                 minutes = 0;
             }
-            console.log(formatTimer());
+            document.querySelector('.timer').innerHTML = formatTimer();
         }, 1000);
         
     }
-
+    //Function to stop timer
     function stopTimer() {
         clearInterval(timer);
+        const stopWatch = document.querySelector('.timer');
+        stopWatch.innerHTML = formatTimer();
     }
-
+    //Format timer display
     function formatTimer() {
         let sec = seconds > 9 ? String(seconds) : '0' + String(seconds);
         let min = minutes > 9 ? String(minutes) : '0' + String(minutes);
         return min  + ':' + sec;
     }
-	//Added function to open cards upon click
-    const deckElement = document.querySelector('.deck');
-    let counter =0;
-    let openCards = [];
-    let moves;
-    deckElement.addEventListener('click', function (event) {
-    const targetCard = event.target;
-    counter++;
-    if(firstClick===false){
-        firstClick = true; 
-        //startTimer();
-    }
-    moves = document.querySelector('.moves');
-    moves.innerHTML = counter;
-    console.log(counter);
-        if (targetCard.classList.contains('card')&& counter<3){
+
+    //Main function to open cards upon click, hide cards, start counter, stop counter and moves
+    function gameLogic(event) {
+        const targetCard = event.target;
+        if(!targetCard.classList.contains('card')){
+            return;
+        }
+        if (firstClick === false) {
+            firstClick = true;
+            startTimer();
+        }
+        
+        moves = document.querySelector('.moves');
+        
+        if (!targetCard.classList.contains('open') && !targetCard.classList.contains('show') && !targetCard.classList.contains('match') ){
             openCards.push(targetCard);
-            targetCard.classList.toggle('open');
-            targetCard.classList.toggle('show');
-        } else if (targetCard.classList.contains('card') && counter > 2){
-            for(let card of openCards){
-                card.classList.toggle('open');
-                card.classList.toggle('show');
+            counter++;
+            moves.innerHTML = counter;
+            targetCard.classList.add('open', 'show');
+            
+            if(openCards.length===2){
+                if (openCards[0].children[0].classList.value === openCards[1].children[0].classList.value){
+                    console.log('This is a match!!');               
+                    openCards[0].classList.toggle('match');
+                    openCards[1].classList.toggle('match');
+
+                    matches++;
+                    if (matches === 8) {
+                        console.log("all matched!");
+                        stopTimer();
+                        return;
+                    }
+                    openCards = [];
+                }
+
+                setTimeout(function () {
+                    openCards.forEach(function (targetCard) {
+                        targetCard.classList.remove('open', 'show');
+                    });
+                    openCards = [];
+
+                }, 1000);
             }
         }
-    });
+    }
 
+    //Function to reset board 
     const resetGame = document.querySelector('.restart');
     resetGame.addEventListener('click', function () {
         moves.innerHTML=0;
-        
+        window.location.reload();
     })
-
