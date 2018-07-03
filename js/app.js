@@ -42,7 +42,7 @@ function shuffle(array) {
     let timer;
     let firstClick = false;
     let matches =0;
-
+    let score = document.querySelector('.stars');
     
     const deckElement = document.querySelector('.deck');
     let counter = 0;
@@ -90,7 +90,16 @@ function shuffle(array) {
         }
         
         moves = document.querySelector('.moves');
-        
+        if(counter>16 && counter<=24){
+                score.children[2].firstChild.classList.toggle('fa-star');
+                score.children[2].firstChild.classList.toggle('fa-star-o');
+            }
+            else if (counter > 24 && counter <= 32) {
+                score.children[1].firstChild.classList.toggle('fa-star');
+                score.children[1].firstChild.classList.toggle('fa-star-o');
+                score.children[2].firstChild.classList.toggle('fa-star');
+                score.children[2].firstChild.classList.toggle('fa-star-o');
+            }
         if (!targetCard.classList.contains('open') && !targetCard.classList.contains('show') && !targetCard.classList.contains('match') ){
             openCards.push(targetCard);
             counter++;
