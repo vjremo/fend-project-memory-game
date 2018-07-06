@@ -40,15 +40,7 @@ function shuffle(array) {
     //Function to set timer
     let hour = 0, minutes =0 , seconds = 0;
     let timer;
-    let firstClick = false;
-    let matches =0;
-    let score = document.querySelector('.stars');
     
-    const deckElement = document.querySelector('.deck');
-    let counter = 0;
-    let openCards = [];
-    let moves;
-    deckElement.addEventListener('click', gameLogic);
 
     function startTimer() {
         timer = setInterval(function () {
@@ -78,6 +70,26 @@ function shuffle(array) {
         return min  + ':' + sec;
     }
 
+    let firstClick = false;
+    let matches = 0;
+
+    let deckElement = document.querySelector('.deck');
+
+    const deckChildren = document.querySelectorAll('.card');
+
+    const shuffledDeck = shuffle(Array.from(deckChildren));
+    deckElement.innerHTML='';
+
+    for (crd of shuffledDeck){
+        deckElement.appendChild(crd);
+    }
+
+    let counter = 0;
+    let openCards = [];
+    let score = document.querySelector('.stars');
+    let moves = document.querySelector('.moves');
+    deckElement.addEventListener('click', gameLogic);
+
     //Main function to open cards upon click, hide cards, start counter, stop counter and moves
     function gameLogic(event) {
         const targetCard = event.target;
@@ -88,24 +100,15 @@ function shuffle(array) {
             firstClick = true;
             startTimer();
         }
-        
-        moves = document.querySelector('.moves');
-        if(counter>16 && counter<=24){
-                score.children[2].firstChild.classList.toggle('fa-star');
-                score.children[2].firstChild.classList.toggle('fa-star-o');
-            }
-            else if (counter > 24 && counter <= 32) {
-                score.children[1].firstChild.classList.toggle('fa-star');
-                score.children[1].firstChild.classList.toggle('fa-star-o');
-                score.children[2].firstChild.classList.toggle('fa-star');
-                score.children[2].firstChild.classList.toggle('fa-star-o');
-            }
+
         if (!targetCard.classList.contains('open') && !targetCard.classList.contains('show') && !targetCard.classList.contains('match') ){
             openCards.push(targetCard);
             counter++;
             moves.innerHTML = counter;
             targetCard.classList.add('open', 'show');
-            
+
+            setScores(counter);
+        
             if(openCards.length===2){
                 if (openCards[0].children[0].classList.value === openCards[1].children[0].classList.value){
                     console.log('This is a match!!');               
@@ -138,3 +141,16 @@ function shuffle(array) {
         moves.innerHTML=0;
         window.location.reload();
     })
+
+    function setScores(counter){
+        if (counter > 16 && counter <= 24) {
+            score.children[2].firstChild.classList.toggle('fa-star');
+            score.children[2].firstChild.classList.toggle('fa-star-o');
+        }
+        else if (counter > 24 && counter <= 32) {
+            score.children[1].firstChild.classList.toggle('fa-star');
+            score.children[1].firstChild.classList.toggle('fa-star-o');
+            score.children[2].firstChild.classList.toggle('fa-star');
+            score.children[2].firstChild.classList.toggle('fa-star-o');
+        }
+    }
