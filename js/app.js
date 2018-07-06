@@ -110,7 +110,7 @@ function shuffle(array) {
             setScores(counter);
         
             if(openCards.length===2){
-                if (openCards[0].children[0].classList.value === openCards[1].children[0].classList.value){
+                if (openCards[0].firstElementChild.classList.value === openCards[1].firstElementChild.classList.value){
                     console.log('This is a match!!');               
                     openCards[0].classList.toggle('match');
                     openCards[1].classList.toggle('match');
