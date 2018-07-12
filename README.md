@@ -6,7 +6,7 @@
 * [Gameplay](#gameplay)
 * [Instructions](#instructions)
 
-##Demo
+## Demo
 [Game Demo](https://vjremo.github.io/fend-project-memory-game/)
 
 ## Gameplay
