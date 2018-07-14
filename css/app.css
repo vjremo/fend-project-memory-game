@@ -107,3 +107,23 @@ h1 {
     float: right;
     cursor: pointer;
 }
+.modal_bg{
+    position: absolute;
+    top :0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.438)
+}
+.modal_body{
+    position: relative;
+    width: 300px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    background: #ffffff;
+    transform: translate(-50%, -70%);
+}
+.vanish{
+    display: none;
+}
